@@ -8,21 +8,21 @@
 class InputOutput {
 
 public:
-    InputOutput(const std::string file_name) : file_name(file_name) {}
+    InputOutput(const std::string &file_name) : file_name(file_name) {}
 
     void process_file();
 
-    unsigned get_v();
+    const unsigned get_v() const;
 
-    unsigned get_e();
+    const unsigned get_e() const ;
 
-    std::vector<std::pair<unsigned, unsigned >> &get_g();
+    const std::vector<std::pair<unsigned, unsigned>> &get_g() const;
 
 private:
     std::ifstream file_stream;
     const std::string file_name;
     unsigned v, e;
-    std::vector<std::pair<unsigned, unsigned >> g;
+    std::vector<std::pair<unsigned, unsigned>> g;
 
     void open_file();
 

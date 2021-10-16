@@ -28,14 +28,14 @@ void InputOutput::process_file() {
     }
 }
 
-unsigned InputOutput::get_v() {
+const unsigned InputOutput::get_v() const {
     return v;
 }
 
-unsigned InputOutput::get_e() {
+const unsigned InputOutput::get_e() const {
     return e;
 }
 
-std::vector<std::pair<unsigned, unsigned >> &InputOutput::get_g() {
+const std::vector<std::pair<unsigned, unsigned >> &InputOutput::get_g() const {
     return g;
 }
