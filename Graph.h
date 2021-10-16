@@ -6,7 +6,6 @@
 #include <math.h>
 #include <cmath>
 
-#include "Point.h"
 #include "InputOutput.h"
 
 namespace tsp {
