@@ -5,7 +5,7 @@
 
 
 int main() {
-    InputOutput<std::vector> io{std::string{"mvc.txt"}};
+    InputOutput<std::vector> io{std::move(std::string{"mvc.txt"})};
     io.process_file();
     io.display_container();
     tsp::Graph<double, std::vector> graph{std::move(io)};

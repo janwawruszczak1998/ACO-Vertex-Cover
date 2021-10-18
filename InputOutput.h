@@ -9,7 +9,7 @@ template<template <typename...> typename Container>
 class InputOutput {
 
 public:
-    InputOutput(const std::string& file_name) : file_name(file_name) {}
+    InputOutput(std::string&&);
 
     void process_file();
 

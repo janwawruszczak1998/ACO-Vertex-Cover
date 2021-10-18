@@ -1,6 +1,12 @@
 #include "InputOutput.h"
 
 template<template <typename...> typename Container>
+InputOutput<Container>::InputOutput(std::string&& name) : file_name(std::move(name))
+{
+
+};
+
+template<template <typename...> typename Container>
 void InputOutput<Container>::open_file() {
     file_stream.open(file_name);
     if (!file_stream.good()) throw std::runtime_error("Error opening file " + file_name + '\n');

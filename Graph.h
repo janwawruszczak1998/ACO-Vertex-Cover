@@ -13,7 +13,7 @@ namespace tsp {
     class Graph {
     public:
         Graph() = default;
-        Graph(InputOutput<Container>&& io) {
+        explicit Graph(InputOutput<Container>&& io) {
             auto size_of_container = io.get_vertices();
             while(size_of_container-- > 0){
                 add_vertex();
