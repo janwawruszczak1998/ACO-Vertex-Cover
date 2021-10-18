@@ -3,10 +3,9 @@
 
 #include <iostream>
 #include <algorithm>
-#include <math.h>
 #include <cmath>
 
-#include "InputOutput.h"
+#include "InputOutput.cpp"
 
 namespace tsp {
 
@@ -14,8 +13,14 @@ namespace tsp {
     class Graph {
     public:
         Graph() = default;
-        Graph(InputOutput&& io) {
-
+        Graph(InputOutput<Container>&& io) {
+            auto size_of_container = io.get_container().size();
+            while(size_of_container-- > 0){
+                add_vertex();
+            }
+            for(const auto& pair : io.get_container()){
+                add_edge(pair.first, pair.second);
+            }
         }
         Graph(Graph const&) = default;
         Graph(Graph&&) = delete;
@@ -45,9 +50,9 @@ namespace tsp {
     }
 
     template<typename T, template<typename, typename> class Container>
-    void Graph<T, Container>::add_edge(unsigned int a, unsigned int b) {
-        graph_representation[a].push_back(std::make_pair(b, 0.0));
-        graph_representation[b].push_back(std::make_pair(a, 0.0));
+    void Graph<T, Container>::add_edge(unsigned int first, unsigned int second) {
+        graph_representation[first].push_back(std::make_pair(second, 0.0));
+        graph_representation[second].push_back(std::make_pair(first, 0.0));
     }
 
     template<typename T, template<typename, typename> class Container>

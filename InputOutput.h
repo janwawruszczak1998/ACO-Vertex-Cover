@@ -5,24 +5,27 @@
 #include <iostream>
 #include <vector>
 
+template<template <typename...> typename Container>
 class InputOutput {
 
 public:
-    InputOutput(const std::string &file_name) : file_name(file_name) {}
+    InputOutput(const std::string& file_name) : file_name(file_name) {}
 
     void process_file();
 
-    const unsigned get_v() const;
+    void display_container() const;
 
-    const unsigned get_e() const ;
+    const unsigned get_vertices() const;
 
-    const std::vector<std::pair<unsigned, unsigned>> &get_g() const;
+    const unsigned get_edges() const ;
+
+    const Container<std::pair<unsigned, unsigned>> &get_container() const;
 
 private:
     std::ifstream file_stream;
     const std::string file_name;
-    unsigned v, e;
-    std::vector<std::pair<unsigned, unsigned>> g;
+    unsigned vertices, edges;
+    Container<std::pair<unsigned, unsigned>> container;
 
     void open_file();
 
