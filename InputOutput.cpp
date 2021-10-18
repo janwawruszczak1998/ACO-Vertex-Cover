@@ -49,7 +49,7 @@ const Container<std::pair<unsigned, unsigned >> &InputOutput<Container>::get_con
 
 template<template <typename...> typename Container>
 void InputOutput<Container>::display_container() const {
-    std::cout << "Size of container is: " << container.size() << "and stored values are:\n";
+    std::cout << "Size of container is: " << container.size() << " and stored values are:\n";
     for(const auto& pair : container){
         std::cout << pair.first << " " << pair.second << std::endl;
     }
