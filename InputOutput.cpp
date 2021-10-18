@@ -33,12 +33,12 @@ void InputOutput<Container>::process_file() {
 
 
 template<template <typename...> typename Container>
-const unsigned InputOutput<Container>::get_vertices() const {
+unsigned InputOutput<Container>::get_vertices() const {
     return vertices;
 }
 
 template<template <typename...> typename Container>
-const unsigned InputOutput<Container>::get_edges() const {
+unsigned InputOutput<Container>::get_edges() const {
     return edges;
 }
 

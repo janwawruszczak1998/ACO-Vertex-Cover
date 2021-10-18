@@ -15,9 +15,9 @@ public:
 
     void display_container() const;
 
-    const unsigned get_vertices() const;
+    unsigned get_vertices() const;
 
-    const unsigned get_edges() const ;
+    unsigned get_edges() const ;
 
     const Container<std::pair<unsigned, unsigned>> &get_container() const;
 
