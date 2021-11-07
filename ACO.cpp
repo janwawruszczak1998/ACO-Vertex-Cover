@@ -67,10 +67,10 @@ void ACO::calculate_solution() {
 
 }
 
-ACO::Ant::Ant(ACO& aco_, unsigned number_, unsigned size_of_graph)
+ACO::Ant::Ant(ACO& aco_, unsigned number_, unsigned order_of_graph)
 : aco(aco_),
 number(number_),
-vertex_tabu(size_of_graph, false)
+vertex_tabu(order_of_graph, false)
 {
     //std::cout << "Ant " << number << " constructed" << std::endl;
 }

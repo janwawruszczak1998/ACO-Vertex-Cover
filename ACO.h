@@ -19,7 +19,7 @@ public:
         Ant(ACO&, unsigned, unsigned);
         ~Ant();
 
-        unsigned get_number() const;
+        [[nodiscard]]unsigned get_number() const;
         std::vector<unsigned> make_route();
         double Phi(unsigned, unsigned);
         unsigned get_next_city(const std::vector<double>&);

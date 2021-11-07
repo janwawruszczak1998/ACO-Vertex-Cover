@@ -1,10 +1,13 @@
 #include "InputOutput.h"
 
 template<template <typename...> typename Container>
-InputOutput<Container>::InputOutput(std::string&& name) : file_name(std::move(name))
+InputOutput<Container>::InputOutput(std::string&& name)
+: file_name(std::move(name)),
+vertices{},
+edges{}
 {
 
-};
+}
 
 template<template <typename...> typename Container>
 void InputOutput<Container>::open_file() {
