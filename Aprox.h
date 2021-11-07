@@ -3,12 +3,11 @@
 
 #include "Algo.h"
 
-class Aprox : public Algorithm{
+class Aprox : public Algorithm {
 public:
-    ~Aprox();
+  ~Aprox();
 
-    void calculate_solution() override;
+  void calculate_solution() override;
 };
 
-
-#endif //AOIN_Aprox_H
+#endif // AOIN_Aprox_H

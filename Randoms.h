@@ -1,37 +1,35 @@
 #ifndef AOIN_RANDOMS_H
 #define AOIN_RANDOMS_H
 
-#include <vector>
-#include <thread>
 #include <mutex>
+#include <thread>
+#include <vector>
 
 #include "Graph.h"
 
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
 #include <limits>
 #include <random>
 
 namespace re {
-    class Randoms {
+class Randoms {
 
-    public:
+public:
+  Randoms() = default;
 
-        Randoms() = default;
+  double uniform();
 
-        double uniform();
+  template <typename T> decltype(auto) random_in_range(T min, T max) {
+    static std::mt19937 mt(rand_device());
+    static std::uniform_int_distribution<T> pick;
 
-        template<typename T>
-        decltype(auto) random_in_range(T min, T max) {
-            static std::mt19937 mt(rand_device());
-            static std::uniform_int_distribution<T> pick;
+    return pick(mt, decltype(pick)::param_type(min, max));
+  }
 
-            return pick(mt, decltype(pick)::param_type(min, max));
-        }
-    private:
-        std::random_device rand_device;
+private:
+  std::random_device rand_device;
+};
+} // namespace re
 
-    };
-} // namespace re;
-
-#endif //AOIN_RANDOMS_H
+#endif // AOIN_RANDOMS_H
