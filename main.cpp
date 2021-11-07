@@ -3,6 +3,7 @@
 
 #include "ACO.h"
 #include "AlgorithmContext.h"
+#include "Aprox.h"
 #include "Graph.h"
 
 int main() {
@@ -14,6 +15,10 @@ int main() {
   graph.display_graph();
 
   AlgorithmContext context{nullptr};
+  context.set_algorithm(new Aprox(graph));
+  context.run_algorithm();
+  context.set_algorithm(nullptr);
+
   context.set_algorithm(new ACO(graph));
   context.run_algorithm();
   context.set_algorithm(nullptr);
