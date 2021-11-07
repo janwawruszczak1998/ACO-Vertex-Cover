@@ -18,9 +18,9 @@ void Aprox::calculate_solution() {
   const auto &G = graph.get_graph();
 
   std::vector<bool> vertex_included_in_solution(N, false);
-  for (unsigned i = 0; i < N; ++i) {
+  for (auto i = 0u; i < N; ++i) {
     if (!vertex_included_in_solution[i]) {
-      for (unsigned j = 0; j < N; ++j) {
+      for (auto j = i + 1; j < N; ++j) {
         if (auto are_adjacent = G[i][j].first;
             are_adjacent && !vertex_included_in_solution[j]) {
           vertex_included_in_solution[i] = true;
