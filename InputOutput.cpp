@@ -17,7 +17,7 @@ void InputOutput<Container>::read_file() {
     if (file_stream.is_open()) {
         file_stream >> vertices;
         file_stream >> edges;
-        unsigned i = edges, a, b;
+        unsigned i = edges, a{}, b{};
         while (i--) {
             file_stream >> a >> b;
             container.emplace_back(a, b);

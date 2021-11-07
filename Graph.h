@@ -15,8 +15,13 @@ namespace tsp {
         Graph() = default;
         explicit Graph(InputOutput<Container>&& io) {
             auto size_of_container = io.get_vertices();
+            graph_representation.reserve(size_of_container);
+            pheromones.resize(size_of_container, T{1.0/size_of_container});
             while(size_of_container-- > 0){
                 add_vertex();
+            }
+            for(auto& neighbours : graph_representation){
+                neighbours.resize(order_, std::make_pair(false, T{0.0}));
             }
             for(const auto& pair : io.get_container()){
                 add_edge(pair.first, pair.second);
@@ -29,18 +34,26 @@ namespace tsp {
 
         void add_edge(unsigned, unsigned);
 
-        void remove_vertex(unsigned);
-
         void display_graph() const;
 
         auto get_order() const;
 
+        auto get_size() const;
+
+        auto& get_graph() {
+            return graph_representation;
+        }
+
+        auto& get_pheromones(){
+            return pheromones;
+        }
+
     private:
         unsigned order_{0};
+        unsigned size_{0};
 
-        // in graph_representation[a][b] we store pair of adj. vertex with vertex no. 'a', and pheromones on edge
-        Container<Container<std::pair<unsigned, T>>>
-                graph_representation;
+        Container<Container<std::pair<bool, T>>> graph_representation;
+        Container<T> pheromones;
     };
 
 
@@ -48,17 +61,22 @@ namespace tsp {
     auto Graph<T, Container>::get_order() const {
         return order_;
     }
+    template<typename T, template<typename, typename> class Container>
+    auto Graph<T, Container>::get_size() const {
+        return size_;
+    }
 
     template<typename T, template<typename, typename> class Container>
     void Graph<T, Container>::add_edge(unsigned int first, unsigned int second) {
-        graph_representation[first].push_back(std::make_pair(second, 0.0));
-        graph_representation[second].push_back(std::make_pair(first, 0.0));
+        size_++;
+        graph_representation[first][second] = std::make_pair(true, T{1.0});
+        graph_representation[second][first] = std::make_pair(true, T{1.0});
     }
 
     template<typename T, template<typename, typename> class Container>
     void Graph<T, Container>::add_vertex() {
         order_++;
-        graph_representation.push_back(Container<std::pair<unsigned, T>, std::allocator < T >>{});
+        graph_representation.push_back(Container<std::pair<bool, T>, std::allocator < T >>{});
     }
 
     template<typename T, template<typename, typename> class Container>
@@ -73,37 +91,6 @@ namespace tsp {
             std::cout << std::endl;
             vertex_id++;
         }
-    }
-
-    template<typename T, template<typename, typename> class Container>
-    void Graph<T, Container>::remove_vertex(const unsigned index) {
-        if (index < 0 || index >= order_) return;
-
-        if (--order_ == 0) {
-            graph_representation.clear();
-        } else {
-            graph_representation.erase(
-                    std::find_if(graph_representation.begin(), graph_representation.end(), [&index](auto &distances) {
-                        return std::any_of(distances.begin(), distances.end(), [&index](auto &vertex) {
-                            return vertex.first == index && static_cast<unsigned>(vertex.second) == 0;
-                        });
-                    }));
-        }
-
-
-        for (auto &distances : graph_representation) {
-            for (auto iterator = distances.begin(); iterator != distances.end();) {
-                if (iterator->first == index) {
-                    iterator = distances.erase(iterator);
-                } else {
-                    if (iterator->first > index) {
-                        --iterator->first;
-                    }
-                    ++iterator;
-                }
-            }
-        }
-
     }
 }
 

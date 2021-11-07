@@ -11,7 +11,7 @@ should work with all strategies via the Algo interface (pure virtual method).
 */
 class AlgorithmContext{
 public:
-    AlgorithmContext(Algorithm*);
+    explicit AlgorithmContext(Algorithm*);
     ~AlgorithmContext();
 
     /**

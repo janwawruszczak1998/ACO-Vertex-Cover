@@ -3,11 +3,11 @@
 
 #include "Algo.h"
 
-class Aprox : public Algo{
+class Aprox : public Algorithm{
 public:
     ~Aprox();
 
-    void calvulate_solution() override;
+    void calculate_solution() override;
 };
 
 
