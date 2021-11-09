@@ -16,13 +16,13 @@ public:
 
   virtual void calculate_solution() = 0;
 
-  template <typename Container> double get_solution_value(Container solution_) {
+  template <typename Container> double get_solution_value(const Container& solution_) {
     return static_cast<double>(solution_.size()) /
            static_cast<double>(solution.size());
   }
 
   template <typename Container>
-  bool check_if_vertex_cover(Container solution_) {
+  bool check_if_vertex_cover(const Container& solution_) {
     unsigned edges_in_solution = 0;
     std::vector<std::pair<unsigned, unsigned>> removed_pairs;
     for (const auto &vertex : solution_) {
