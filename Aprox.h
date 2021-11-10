@@ -6,7 +6,7 @@
 class Aprox : public Algorithm {
 public:
   explicit Aprox(tsp::Graph<double, std::vector> &);
-  ~Aprox();
+  ~Aprox() override;
 
   void calculate_solution() override;
 };
