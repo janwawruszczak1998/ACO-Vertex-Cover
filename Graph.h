@@ -14,7 +14,7 @@ template <typename T,
 class Graph {
 public:
   Graph() = default;
-  explicit Graph(InputOutput<Container> &&io) {
+  explicit Graph(const InputOutput<Container> &io) {
     auto size_of_container = io.get_vertices();
     graph_representation.reserve(size_of_container);
     pheromones.resize(size_of_container, T{1.0 / size_of_container});

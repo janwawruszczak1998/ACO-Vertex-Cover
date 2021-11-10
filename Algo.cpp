@@ -6,3 +6,7 @@ Algorithm::Algorithm(tsp::Graph<double, std::vector> &graph_)
 }
 
 Algorithm::~Algorithm() { std::cout << "Algorithm deconstructed" << std::endl; }
+
+const std::vector<unsigned> &Algorithm::get_solution() const {
+  return solution;
+}

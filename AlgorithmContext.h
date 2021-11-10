@@ -2,6 +2,7 @@
 #define AOIN_ALGORITHMCONTEXT_H
 
 #include "Algo.h"
+#include "InputOutput.h"
 
 /**
 The Context maintains a reference to one of the Strategy (Algo)
@@ -10,13 +11,13 @@ should work with all strategies via the Algo interface (pure virtual method).
 */
 class AlgorithmContext {
 public:
-  explicit AlgorithmContext(Algorithm *);
+  explicit AlgorithmContext(Algorithm *, InputOutput<std::vector> &);
   ~AlgorithmContext();
 
   /**
   Usually, the Context allows replacing a Strategy object at runtime.
   */
-  void set_algorithm(Algorithm *);
+  void set_algorithm(Algorithm *, std::string &&);
 
   /**
   The Context delegates some work to the Strategy object instead of
@@ -27,6 +28,8 @@ public:
   void run_algorithm();
 
 private:
+  std::string context_name;
+  InputOutput<std::vector> &io;
   Algorithm *algo;
 };
 
