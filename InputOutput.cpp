@@ -95,6 +95,7 @@ template <template <typename...> typename Container>
 void InputOutput<Container>::write_container_to_file(
     const std::vector<unsigned> &v) {
   if (file_stream.good()) {
+    file_stream << v.size() << "\n";
     for (auto &i : v) {
       file_stream << i << " ";
     }
