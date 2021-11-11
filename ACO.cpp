@@ -25,18 +25,24 @@ ACO::~ACO() {
 
 void ACO::calculate_solution() {
   const auto iterations = 100;
-  std::vector<unsigned> best_solution(graph.get_order());
+  std::vector<unsigned> best_solution(graph.get_order() + 1);
   const unsigned ants_abundance = graph.get_order();
   std::vector<std::vector<unsigned>> solutions(ants_abundance);
 
   for (auto iter = 0u; iter < iterations; ++iter) {
 
     for (auto &edges : graph.get_graph()) {
-      for (auto &edge : edges) {
-        if (edge.first) {
-          edge.second = 1.0;
+      for (auto edge = 0u; edge < edges.size(); ++edge) {
+        if (edges[edge].first) {
+            decltype(edges[edge].second) connectivity = 0.0;
+            for(const auto& connection : graph.get_graph()[edge]){
+                if(connection.first){
+                    connectivity += 1.0;
+                }
+            }
+            edges[edge].second = connectivity;
         } else {
-          edge.second = 0.0;
+            edges[edge].second = 0.0;
         }
       }
     }
@@ -51,11 +57,8 @@ void ACO::calculate_solution() {
           best_solution = solutions[ant_n];
       }
     }
-    for (auto &solution : solutions) {
-      if (!check_if_vertex_cover(solution)) {
-        solution.clear();
-      }
-    }
+
+    solution = best_solution;
     update_pheromones(solutions);
   }
   solution = best_solution;
@@ -68,7 +71,6 @@ ACO::Ant::Ant(ACO &aco_, unsigned number_, unsigned order_of_graph)
 
 ACO::Ant::~Ant() {
     vertex_tabu.clear();
-    // std::cout << "Ant " << number << " deconstructed" << std::endl;
 }
 
 std::vector<unsigned> ACO::Ant::make_route() {
@@ -104,6 +106,10 @@ std::vector<unsigned> ACO::Ant::make_route() {
 
 unsigned ACO::Ant::get_next_city(const std::vector<double> &probabilites) {
 
+//    for(const auto& prob : probabilites){
+//        std::cout << prob << " ";
+//    }
+//    std::cout << "end of prob" << std::endl;
   auto vertex = 0u;
   auto xi = aco.randoms.uniform(), sum = probabilites[vertex];
   while (sum < xi) {
@@ -111,6 +117,9 @@ unsigned ACO::Ant::get_next_city(const std::vector<double> &probabilites) {
     sum += probabilites[vertex];
   }
 
+  for(auto& neighbour : aco.graph.get_graph()[vertex]){
+      neighbour.second /= 5;
+  }
   return vertex;
 }
 
@@ -140,14 +149,20 @@ double ACO::Ant::Phi(unsigned city_i, unsigned city_j) {
 
 void ACO::update_pheromones(
     const std::vector<std::vector<unsigned>> &solutions) {
-  const auto q =
-      static_cast<double>(graph.get_order()); // parametr feromonowy - reguluje
-                                              // ile jest kladzione feromonu
-  constexpr double ro = 0.01; // ro - parametr aktualizowanego feromonu < 1
+
+  const auto q = static_cast<double>(graph.get_order()); // parametr feromonowy - reguluje ile jest kladzione feromonu
+  constexpr double ro = 0.1; // ro - parametr aktualizowanego feromonu < 1
   for (const auto &solution : solutions) {
+      if(solution.empty()){
+          continue;
+      }
     const auto solution_value = get_solution_value(solution);
-    for (auto &pheromone : graph.get_pheromones()) {
-      pheromone = (1.0 - ro) * pheromone + q / (solution_value);
+    for (auto& pheromone : graph.get_pheromones()){
+       pheromone *= (1.0 - ro);
+    }
+    for (auto pheromone = 0u; pheromone < graph.get_pheromones().size(); ++pheromone){
+      if(std::find(solution.begin(), solution.end(), pheromone) != solution.end())
+        graph.get_pheromones()[pheromone] += q * (solution_value);
     }
   }
 }

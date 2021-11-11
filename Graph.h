@@ -64,9 +64,12 @@ auto Graph<T, Container>::get_size() const {
 
 template <typename T, template <typename, typename> class Container>
 void Graph<T, Container>::add_edge(unsigned int first, unsigned int second) {
-  size_++;
-  graph_representation[first][second] = std::make_pair(true, T{1.0});
-  graph_representation[second][first] = std::make_pair(true, T{1.0});
+  if(!graph_representation[first][second].first && !graph_representation[second][first].second){
+      size_++;
+      graph_representation[first][second] = std::make_pair(true, T{1.0});
+      graph_representation[second][first] = std::make_pair(true, T{1.0});
+  }
+
 }
 
 template <typename T, template <typename, typename> class Container>

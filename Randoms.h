@@ -20,11 +20,11 @@ public:
 
   double uniform();
 
-  template <typename T> decltype(auto) random_in_range(T min, T max) {
+  template <typename T> auto random_in_range(T min, T max) {
     static std::mt19937 mt(rand_device());
-    static std::uniform_int_distribution<T> pick;
+    static std::uniform_int_distribution<T> pick(min, max);
 
-    return pick(mt, decltype(pick)::param_type(min, max));
+    return pick(mt);
   }
 
 private:
