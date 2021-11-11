@@ -25,7 +25,7 @@ ACO::~ACO() {
 
 void ACO::calculate_solution() {
   const auto iterations = 100;
-  std::vector<unsigned> best_solution;
+  std::vector<unsigned> best_solution(graph.get_order());
   const unsigned ants_abundance = graph.get_order();
   std::vector<std::vector<unsigned>> solutions(ants_abundance);
 
@@ -47,8 +47,8 @@ void ACO::calculate_solution() {
     for (auto ant_n = 0u; ant_n < ants_abundance; ++ant_n) {
       Ant ant(*this, ant_n, graph.get_order());
       solutions[ant_n] = ant.make_route();
-      if (solutions[ant_n].size() < solution.size()) {
-        solution = solutions[ant_n];
+      if (solutions[ant_n].size() < best_solution.size()) {
+          best_solution = solutions[ant_n];
       }
     }
     for (auto &solution : solutions) {
@@ -58,16 +58,17 @@ void ACO::calculate_solution() {
     }
     update_pheromones(solutions);
   }
+  solution = best_solution;
 }
 
 ACO::Ant::Ant(ACO &aco_, unsigned number_, unsigned order_of_graph)
     : aco(aco_), number(number_), vertex_tabu(order_of_graph, false) {
-  // std::cout << "Ant " << number << " constructed" << std::endl;
+    // std::cout << "Ant " << number << " constructed" << std::endl;
 }
 
 ACO::Ant::~Ant() {
-  vertex_tabu.clear();
-  // std::cout << "Ant " << number << " deconstructed" << std::endl;
+    vertex_tabu.clear();
+    // std::cout << "Ant " << number << " deconstructed" << std::endl;
 }
 
 std::vector<unsigned> ACO::Ant::make_route() {
