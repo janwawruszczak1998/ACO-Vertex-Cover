@@ -8,8 +8,8 @@ public:
     void generate_tests();
 
 private:
-    constexpr static auto lower_bound_size = 30u;
-    constexpr static auto upper_bound_size = 40u;
+    constexpr static auto lower_bound_size = 40u;
+    constexpr static auto upper_bound_size = 80u;
     constexpr static auto step = 10u;
     std::fstream file_stream;
 };

@@ -8,10 +8,10 @@
 #include "TestsGenerator.h"
 
 int main() {
-/* // Uncomment only if test files need to be (re) generated
- * TestsGenerator tg;
- * tg.generate_tests();
-*/
+// Uncomment only if test files need to be (re) generated
+//TestsGenerator tg;
+//tg.generate_tests();
+
 
   const std::filesystem::path input_dir{"./input/"};
 
@@ -20,8 +20,6 @@ int main() {
     io.process_input_file();
 
     tsp::Graph<double, std::vector> graph{io};
-    graph.display_graph();
-
 
     AlgorithmContext context{nullptr, io};
 
