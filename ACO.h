@@ -22,6 +22,7 @@ public:
     [[nodiscard]] unsigned get_number() const;
     std::vector<unsigned> make_route();
     double Phi(unsigned, unsigned);
+    unsigned edges_in_solution;
     unsigned get_next_city(const std::vector<double> &);
 
   private:

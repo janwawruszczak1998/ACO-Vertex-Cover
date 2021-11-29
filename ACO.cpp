@@ -65,7 +65,7 @@ void ACO::calculate_solution() {
 }
 
 ACO::Ant::Ant(ACO &aco_, unsigned number_, unsigned order_of_graph)
-    : aco(aco_), number(number_), vertex_tabu(order_of_graph, false) {
+    : aco(aco_), number(number_), vertex_tabu(order_of_graph, false), edges_in_solution(0u) {
     // std::cout << "Ant " << number << " constructed" << std::endl;
 }
 
@@ -74,29 +74,31 @@ ACO::Ant::~Ant() {
 }
 
 std::vector<unsigned> ACO::Ant::make_route() {
-  std::vector<double> probabilites;
+  std::vector<double> probabilities;
 
   route.reserve(aco.graph.get_order());
   route.push_back(get_number());
+  aco.check_if_vertex_cover(route, edges_in_solution, get_number());
   vertex_tabu[get_number()] = true;
 
   for (auto i = 0u; i < aco.graph.get_order() - 1; ++i) {
     unsigned city_i = route[i]; // miasto i-te
-    probabilites.clear();
-    probabilites.resize(aco.graph.get_order(), 0.0);
+    probabilities.clear();
+    probabilities.resize(aco.graph.get_order(), 0.0);
     // wylicz prawdopodobienswo przejscia do miasta j-tego
     for (unsigned city_j = 0; city_j < aco.graph.get_order(); ++city_j) {
       if (city_i == city_j) {
         continue; // polaczenie ze samym soba
       }
       if (!vertex_tabu[city_j]) { // jesli miasto jeszcze nie odwiedzone
-        probabilites[city_j] = Phi(city_i, city_j);
+        probabilities[city_j] = Phi(city_i, city_j);
       }
     }
 
-    route.push_back(get_next_city(probabilites));
+    auto next_city = get_next_city(probabilities);
+    route.push_back(next_city);
     vertex_tabu[route[i + 1]] = true;
-    if (aco.check_if_vertex_cover(route)) {
+    if (aco.check_if_vertex_cover(route, edges_in_solution, next_city)) {
       break;
     }
   }
@@ -104,17 +106,13 @@ std::vector<unsigned> ACO::Ant::make_route() {
   return route;
 }
 
-unsigned ACO::Ant::get_next_city(const std::vector<double> &probabilites) {
+unsigned ACO::Ant::get_next_city(const std::vector<double> &probabilities) {
 
-//    for(const auto& prob : probabilites){
-//        std::cout << prob << " ";
-//    }
-//    std::cout << "end of prob" << std::endl;
   auto vertex = 0u;
-  auto xi = aco.randoms.uniform(), sum = probabilites[vertex];
+  auto xi = aco.randoms.uniform(), sum = probabilities[vertex];
   while (sum < xi) {
     ++vertex;
-    sum += probabilites[vertex];
+    sum += probabilities[vertex];
   }
 
   for(auto& neighbour : aco.graph.get_graph()[vertex]){

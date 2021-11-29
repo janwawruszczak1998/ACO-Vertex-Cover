@@ -25,21 +25,17 @@ public:
   }
 
   template <typename Container>
-  bool check_if_vertex_cover(const Container &solution_) {
-    unsigned edges_in_solution = 0;
-    std::vector<std::pair<unsigned, unsigned>> removed_pairs;
-    for (const auto &vertex : solution_) {
-      for (auto neighbour = 0u; neighbour < graph.get_order(); ++neighbour) {
-        if (graph.get_graph()[vertex][neighbour].first == 1u) {
-          edges_in_solution++;
-          removed_pairs.push_back(std::make_pair(neighbour, vertex));
-          graph.get_graph()[neighbour][vertex].first = false;
+  bool check_if_vertex_cover(const Container &solution_, unsigned& current_edges, const unsigned new_vertex) {
+      std::set<unsigned> solution_vertices(solution_.begin(), solution_.end());
+    unsigned edges_in_solution = current_edges;
+
+    for(auto neighbour = 0u; neighbour < graph.get_order(); ++neighbour){
+        if(graph.get_graph()[new_vertex][neighbour].first && !solution_vertices.contains(neighbour)){
+            edges_in_solution++;
         }
-      }
     }
-    for (const auto &removed_pair : removed_pairs) {
-      graph.get_graph()[removed_pair.first][removed_pair.second].first = true;
-    }
+
+    current_edges = edges_in_solution;
 
     if (edges_in_solution == graph.get_size()) {
       return true;
